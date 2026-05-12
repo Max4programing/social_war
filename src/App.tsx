@@ -15,10 +15,10 @@ export default function App() {
   });
 
   return (
-    <div className="min-h-screen font-serif text-[#1a1a1a] bg-[#f2e6d0] selection:bg-[#bc002d] selection:text-white flex flex-col border-[12px] md:border-[24px] border-[#bc002d] relative shadow-2xl">
+    <div className="min-h-screen font-serif text-[#1a1a1a] bg-[#f2e6d0] print:bg-white selection:bg-[#bc002d] selection:text-[#1a1a1a] flex flex-col border-[12px] md:border-[24px] border-[#bc002d] print:border-none relative shadow-2xl print:shadow-none">
       {/* Background watermark/texture overlay */}
-      <div className="fixed inset-0 pointer-events-none opacity-5" style={{ backgroundImage: "url('https://www.transparenttextures.com/patterns/cardboard-flat.png')" }}></div>
-      <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#bc002d22] to-transparent pointer-events-none"></div>
+      <div className="fixed inset-0 pointer-events-none opacity-5 print:hidden" style={{ backgroundImage: "url('https://www.transparenttextures.com/patterns/cardboard-flat.png')" }}></div>
+      <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#bc002d22] to-transparent pointer-events-none print:hidden"></div>
 
       {/* Scroll indicator */}
       <motion.div
@@ -26,11 +26,11 @@ export default function App() {
         style={{ scaleX }}
       />
       
-      <main className="w-full max-w-5xl mx-auto px-6 sm:px-12 md:px-20 pt-16 relative z-10">
+      <main className="w-full max-w-5xl mx-auto px-6 sm:px-12 md:px-20 pt-16 relative z-10 print:max-w-none print:px-0 print:pt-0">
 
         <CoverPage />
         
-        <div className="space-y-32 relative z-10 pt-24 pb-32">
+        <div className="space-y-32 print:space-y-0 relative z-10 pt-24 pb-32 print:py-0">
           <Section1_Intro />
           <Section2_SystemFailure />
           <Section3_MajorPowers />
@@ -48,10 +48,10 @@ export default function App() {
 
 function Section2_SystemFailure() {
   return (
-    <section>
+    <section className="print:break-before-page print:break-inside-avoid">
       <FadeIn>
         <div className="flex items-center gap-2 mb-8">
-          <span className="bg-[#1a1a1a] text-white w-8 h-8 flex items-center justify-center font-bold">02</span>
+          <span className="border-2 border-[#1a1a1a] text-[#1a1a1a] w-8 h-8 flex items-center justify-center font-bold bg-[#f2e6d0]">02</span>
           <h2 className="text-3xl font-black uppercase tracking-tight text-[#1a1a1a]">The Flawed Foundation: 1919 & The League</h2>
         </div>
       </FadeIn>
@@ -85,10 +85,10 @@ function Section2_SystemFailure() {
 
 function Section3_MajorPowers() {
   return (
-    <section>
+    <section className="print:break-before-page print:break-inside-avoid">
       <FadeIn>
         <div className="flex items-center gap-2 mb-8">
-          <span className="bg-[#1a1a1a] text-white w-8 h-8 flex items-center justify-center font-bold">03</span>
+          <span className="border-2 border-[#1a1a1a] text-[#1a1a1a] w-8 h-8 flex items-center justify-center font-bold bg-[#f2e6d0]">03</span>
           <h2 className="text-3xl font-black uppercase tracking-tight text-[#1a1a1a]">National Imperatives: Policies of the Powers (1919-1939)</h2>
         </div>
       </FadeIn>
@@ -126,7 +126,7 @@ function Section3_MajorPowers() {
         </FadeIn>
 
         <FadeIn delay={0.4}>
-          <div className="bg-[#1a1a1a] text-[#f2e6d0] p-6 md:p-8 border-4 border-[#1a1a1a]">
+          <div className="bg-[#1a1a1a]/10 text-[#1a1a1a] p-6 md:p-8 border-4 border-[#1a1a1a]">
             <h3 className="text-2xl font-black uppercase tracking-tight mb-4 text-[#bc002d]">The Revisionist Powers: Germany, Italy, & The Soviet Union</h3>
             <div className="space-y-4 text-sm font-medium leading-relaxed">
               <p>
@@ -149,46 +149,46 @@ function Section4_CollapseTimeline() {
     {
       year: "1931-1932",
       title: "The Manchurian Incident & Manchukuo",
-      icon: <Factory className="w-6 h-6 text-white" />,
+      icon: <Factory className="w-6 h-6 text-[#1a1a1a]" />,
       text: "Economic strangulation and warlord chaos threatened our legitimate railway investments in Manchuria. Our Kwantung Army secured the region. We established the independent state of Manchukuo to create stability and a buffer against the communists. The League of Nations refused to recognize our positive impact. They deployed the Lytton Commission to condemn us. They ignored our need to survive. We withdrew from the League in 1933. This proved the League was an inflexible instrument for Western powers."
     },
     {
       year: "1935-1936",
       title: "Italy Invades Ethiopia & League Paralysis",
-      icon: <Swords className="w-6 h-6 text-white" />,
+      icon: <Swords className="w-6 h-6 text-[#1a1a1a]" />,
       text: "Italy pursued its own ambitions in Africa in 1935. The Italians challenged the foundational rules of the League. The League responded with cowardice. They enacted weak economic sanctions. They avoided critical resources like oil to avoid angering Mussolini. This response demonstrated their weakness. The system of collective security was a complete facade. The West will only fight to protect its own possessions."
     },
     {
       year: "1936",
       title: "Rhineland Remilitarization",
-      icon: <ShieldAlert className="w-6 h-6 text-white" />,
+      icon: <ShieldAlert className="w-6 h-6 text-[#1a1a1a]" />,
       text: "Germany tested the architects of Versailles. They marched their troops back into their own sovereign territory. They dismantled the punishing demilitarization rules of the treaty. Britain and France did nothing. Paralysis from domestic politics and a lack of moral conviction stopped them. Leaders in Tokyo carefully noted this inaction. It proved the democracies lacked the resolve to enforce their own global system."
     },
     {
       year: "1937",
       title: "The China Incident begins",
-      icon: <AlertTriangle className="w-6 h-6 text-white" />,
+      icon: <AlertTriangle className="w-6 h-6 text-[#1a1a1a]" />,
       text: "Chinese forces launched repeated provocations at the Marco Polo Bridge. We engaged Nationalist forces on a massive scale. Our objective is not conquest. We want to secure a cooperative and stable neighbor. The Nationalist government refused our friendship. They plunged Asia into a grueling war. Western powers meddle in the conflict. The United States and Britain send arms and financial aid to the Chinese over the Burma Road. They want to bleed us white. We fight a defensive war against this Western interference and Soviet agitation."
     },
     {
       year: "1938-1939",
       title: "Munich and the Failure of Appeasement",
-      icon: <Landmark className="w-6 h-6 text-white" />,
+      icon: <Landmark className="w-6 h-6 text-[#1a1a1a]" />,
       text: "Britain and France handed Czechoslovakia to Germany at Munich without a fight. They proved that Western treaties are worthless paper. Geopolitical convenience caused them to break their promises. This signaled to the world that international law is dead. Raw power replaced it completely."
     },
     {
       year: "August-September 1939",
       title: "The Nazi-Soviet Pact & The Fall of Poland",
-      icon: <Eye className="w-6 h-6 text-white" />,
+      icon: <Eye className="w-6 h-6 text-[#1a1a1a]" />,
       text: "Germany dealt the final blow to the European order. They shocked the world by allying with the Soviets. They betrayed our Anti-Comintern understanding. They signed a secret protocol to divide Eastern Europe. They invaded Poland days later. Britain and France finally drew a line in the sand. They were militarily unprepared to hold this line. European diplomacy and the Versailles order collapsed completely."
     }
   ];
 
   return (
-    <section>
+    <section className="print:break-before-page print:break-inside-avoid">
       <FadeIn>
         <div className="flex items-center gap-2 mb-12">
-          <span className="bg-[#1a1a1a] text-white w-8 h-8 flex items-center justify-center font-bold">04</span>
+          <span className="border-2 border-[#1a1a1a] text-[#1a1a1a] w-8 h-8 flex items-center justify-center font-bold bg-[#f2e6d0]">04</span>
           <h2 className="text-3xl font-black uppercase tracking-tight text-[#1a1a1a]">The Unraveling: Turning Points</h2>
         </div>
       </FadeIn>
@@ -215,21 +215,21 @@ function Section4_CollapseTimeline() {
 
 function Section5_Judgment() {
   return (
-    <section>
+    <section className="print:break-before-page print:break-inside-avoid">
       <FadeIn>
         <div className="flex items-center gap-2 mb-8">
-          <span className="bg-[#1a1a1a] text-white w-8 h-8 flex items-center justify-center font-bold">05</span>
+          <span className="border-2 border-[#1a1a1a] text-[#1a1a1a] w-8 h-8 flex items-center justify-center font-bold bg-[#f2e6d0]">05</span>
           <h2 className="text-3xl font-black uppercase tracking-tight text-[#1a1a1a]">Final Judgment: Who is to Blame?</h2>
         </div>
       </FadeIn>
 
       <FadeIn delay={0.2}>
-        <div className="bg-[#bc002d] text-white p-8 md:p-14 border-x-[16px] border-[#1a1a1a] relative overflow-hidden">
+        <div className="bg-[#bc002d]/10 text-[#1a1a1a] p-8 md:p-14 relative overflow-hidden">
           <div className="absolute top-0 right-0 p-4 opacity-10">
-             <Award className="w-64 h-64" />
+             <Award className="w-64 h-64 text-[#bc002d]" />
           </div>
           <div className="relative z-10">
-            <h3 className="text-3xl font-bold mb-8 border-b border-[#f9f7f0]/30 pb-4">Conclusions of the Foreign Ministry</h3>
+            <h3 className="text-3xl font-bold mb-8 border-b border-[#1a1a1a]/30 pb-4">Conclusions of the Foreign Ministry</h3>
             
             <p className="text-xl leading-relaxed mb-8">
               Honored Minister, we evaluated this tragic cascade of global failures. We reached one undeniable conclusion. The peacemakers of 1919 and the hypocritical Western democracies caused this global war.
@@ -237,21 +237,21 @@ function Section5_Judgment() {
             
             <ul className="space-y-8 mb-12 list-none">
               <li className="flex gap-6">
-                <span className="font-bold text-[#f9f7f0]/50 text-3xl font-mono">I.</span>
+                <span className="font-bold text-[#1a1a1a]/50 text-3xl font-mono">I.</span>
                 <div className="space-y-2">
                   <h4 className="font-bold text-xl">The Original Sin of Versailles</h4>
                   <p className="leading-relaxed">The architects of Versailles created a system to contain rising powers. They wanted to enshrine British and French dominance. They built a brittle and inflexible world order. They refused to accommodate the economic realities of the modern era. They ignored the security and resource needs of nations outside Europe. They rejected the Racial Equality Proposal. They embedded racial prejudice into international law.</p>
                 </div>
               </li>
               <li className="flex gap-6">
-                <span className="font-bold text-[#f9f7f0]/50 text-3xl font-mono">II.</span>
+                <span className="font-bold text-[#1a1a1a]/50 text-3xl font-mono">II.</span>
                 <div className="space-y-2">
                   <h4 className="font-bold text-xl">Economic Warfare and Strangulation</h4>
                   <p className="leading-relaxed">The Great Depression tested their flawed system. The Western powers retreated into fierce economic nationalism. They ended free trade. They walled off their vast empires. They enacted punishing tariffs to starve resource-poor nations like our own. They failed to share the wealth and space of the world equitably. This failure forced our actions in Manchuria and China. We acted to survive.</p>
                 </div>
               </li>
               <li className="flex gap-6">
-                <span className="font-bold text-[#f9f7f0]/50 text-3xl font-mono">III.</span>
+                <span className="font-bold text-[#1a1a1a]/50 text-3xl font-mono">III.</span>
                 <div className="space-y-2">
                   <h4 className="font-bold text-xl">The Facade of Moral Superiority</h4>
                   <p className="leading-relaxed">Their cowardly appeasement in Europe proved the Versailles system was a hollow shell. Bluff and bluster enforced its rules. Britain and France defended their stolen empires. At the same time, they condemned our efforts to build a prosperous East Asia. The United States lectured us on peace. They tightened an economic noose around our necks.</p>
@@ -259,11 +259,11 @@ function Section5_Judgment() {
               </li>
             </ul>
 
-            <div className="border-t border-[#f9f7f0]/30 pt-10 text-center">
+            <div className="border-t border-[#1a1a1a]/30 pt-10 text-center">
               <p className="font-bold text-2xl italic font-serif">
                 "They demanded a peaceful world, but they wanted to own it in its entirety. We broke their unnatural peace. We needed to survive in a world that sought to suffocate us."
               </p>
-              <p className="mt-6 text-[#f9f7f0]/70 tracking-widest uppercase text-sm">End of Memorandum</p>
+              <p className="mt-6 text-[#1a1a1a]/70 tracking-widest uppercase text-sm">End of Memorandum</p>
             </div>
           </div>
         </div>
@@ -274,7 +274,7 @@ function Section5_Judgment() {
 
 function References() {
   return (
-    <div className="text-sm text-[#1a1a1a] font-serif px-8">
+    <div className="text-sm text-[#1a1a1a] font-serif px-8 print:break-before-page print:break-inside-avoid">
       <h4 className="font-black text-xl mb-6 uppercase tracking-tight">References</h4>
       <ul className="space-y-6 break-words font-medium text-sm md:text-base list-decimal pl-6 marker:font-black marker:text-[#bc002d]">
         <li>Bix, H. P. (2000). <i>Hirohito and the Making of Modern Japan</i>. HarperCollins.</li>
@@ -328,7 +328,7 @@ function CoverPage() {
         </svg>
       </div>
 
-      <div className="flex flex-col">
+      <div className="flex flex-col items-center text-center">
         <h1 className="text-6xl md:text-[5.5rem] lg:text-[7rem] font-black tracking-tighter leading-none uppercase mt-2">
           The Collapse<br/>Of<br/>Western<br/>Order
         </h1>
@@ -337,8 +337,8 @@ function CoverPage() {
           A Strategic Memorandum on the Outbreak of Global War
         </p>
 
-        <div className="flex items-center gap-4 mt-6 self-start">
-          <div className="flex flex-col text-left text-[#1a1a1a]">
+        <div className="flex items-center justify-center text-center gap-4 mt-8">
+          <div className="flex flex-col text-right text-[#1a1a1a]">
             <p className="text-[10px] font-bold uppercase tracking-widest opacity-70">Prepared By</p>
             <p className="text-2xl font-black tracking-tight leading-none">Cade & Max</p>
           </div>
@@ -391,10 +391,10 @@ function CoverPage() {
 
 function Section1_Intro() {
   return (
-    <section>
+    <section className="print:break-before-page print:break-inside-avoid">
       <FadeIn>
         <div className="flex items-center gap-2 mb-8">
-          <span className="bg-[#1a1a1a] text-white w-8 h-8 flex items-center justify-center font-bold">01</span>
+          <span className="border-2 border-[#1a1a1a] text-[#1a1a1a] w-8 h-8 flex items-center justify-center font-bold bg-[#f2e6d0]">01</span>
           <h2 className="text-3xl font-black uppercase tracking-tight text-[#1a1a1a]">The Current Crisis</h2>
         </div>
       </FadeIn>
