@@ -15,7 +15,7 @@ export default function App() {
   });
 
   return (
-    <div className="min-h-screen font-serif text-[#1a1a1a] bg-[#f2e6d0] print:bg-white selection:bg-[#bc002d] selection:text-[#1a1a1a] flex flex-col border-[12px] md:border-[24px] border-[#bc002d] print:border-none relative shadow-2xl print:shadow-none">
+    <div className="min-h-screen font-serif text-[#1a1a1a] bg-[#f2e6d0] selection:bg-[#bc002d] selection:text-[#1a1a1a] flex flex-col border-[12px] md:border-[24px] border-[#bc002d] relative shadow-2xl">
       {/* Background watermark/texture overlay */}
       <div className="fixed inset-0 pointer-events-none opacity-5 print:hidden" style={{ backgroundImage: "url('https://www.transparenttextures.com/patterns/cardboard-flat.png')" }}></div>
       <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#bc002d22] to-transparent pointer-events-none print:hidden"></div>
@@ -26,7 +26,7 @@ export default function App() {
         style={{ scaleX }}
       />
       
-      <main id="report-main-content" className="w-full max-w-5xl mx-auto px-6 sm:px-12 md:px-20 pt-16 relative z-10 print:max-w-none print:px-0 print:pt-0">
+      <main id="report-main-content" className="w-full max-w-5xl mx-auto px-6 sm:px-12 md:px-20 pt-16 relative z-10 print:py-8">
 
         <CoverPage />
         
@@ -133,7 +133,7 @@ function Section3_MajorPowers() {
                 Germany and Italy felt intense humiliation from the Versailles treaty. The Depression brought profound economic desperation. They embraced authoritarian nationalism and militarism to break the chains of the 1919 system. Their national interests include territorial expansion and the restoration of national pride. Our cultures and goals differ. Still, we signed the Anti-Comintern Pact with them in 1936. We share a common rival in the Western colonial powers. We share a common enemy in Soviet communism.
               </p>
               <p>
-                The Soviet Union under Stalin spent the 1920s and 1930s on a brutal industrialization program. They exported communist subversion globally through the Comintern. Their primary political goal is to start revolution and class warfare in capitalist nations. They want to conquer territory and destroy traditional society. They signed a Non-Aggression Pact with Germany in August 1939. This proves their Marxist ideas are secondary to survival and expansion. They are untrustworthy. Their presence on our northern borders demands constant vigilance.
+                The Soviet Union under Stalin focused on a brutal industrialization program during the 1920s and 1930s. They export communist subversion globally through the Comintern. Their primary goal is to ignite revolution and class warfare in capitalist nations. We faced Soviet forces recently at the Nomonhan border clashes. We learned a bloody lesson about their growing military strength. They signed a Non-Aggression Pact with Germany in August 1939. This pact proves their Marxist ideas are secondary to expansion. They are untrustworthy. Their presence on our northern borders demands constant vigilance.
               </p>
             </div>
           </div>
@@ -197,10 +197,10 @@ function Section4_CollapseTimeline() {
         {events.map((event, index) => (
           <FadeIn key={index} delay={index * 0.15}>
             <div className="relative pl-8 md:pl-12 print:break-inside-avoid print:mb-8">
-              <div className="absolute -left-[21px] top-1 w-10 h-10 rounded-none bg-[#bc002d] flex items-center justify-center border-2 border-[#1a1a1a] print:border-white">
+              <div className="absolute -left-[21px] top-1 w-10 h-10 rounded-none bg-[#bc002d] flex items-center justify-center border-2 border-[#1a1a1a]">
                 {event.icon}
               </div>
-              <div className="bg-[#f2e6d0] p-8 border-4 border-[#1a1a1a] shadow-[8px_8px_0_#bc002d] print:shadow-none print:bg-white print:border-gray-300">
+              <div className="bg-[#f2e6d0] p-8 border-4 border-[#1a1a1a] shadow-[8px_8px_0_#bc002d]">
                 <span className="text-[#bc002d] font-black text-xl mb-2 block font-mono">{event.year}</span>
                 <h4 className="text-xl font-black uppercase tracking-tight mb-4">{event.title}</h4>
                 <p className="text-[#1a1a1a] font-medium leading-relaxed text-base">{event.text}</p>
@@ -257,6 +257,13 @@ function Section5_Judgment() {
                   <p className="leading-relaxed">Their cowardly appeasement in Europe proved the Versailles system was a hollow shell. Bluff and bluster enforced its rules. Britain and France defended their stolen empires. At the same time, they condemned our efforts to build a prosperous East Asia. The United States lectured us on peace. They tightened an economic noose around our necks.</p>
                 </div>
               </li>
+              <li className="flex gap-6">
+                <span className="font-bold text-[#1a1a1a]/50 text-3xl font-mono">IV.</span>
+                <div className="space-y-2">
+                  <h4 className="font-bold text-xl">The Necessity of Our Course</h4>
+                  <p className="leading-relaxed">Some voices within our own government caution against provoking the West. They argue that alignment with Germany isolates us. They fear a devastating economic blockade. We hear these internal critics, and we reject their cowardice. Submitting to Western demands promises a slow death for our Empire. We chose the path of strength because the international system offered no alternative. We must secure our sphere of influence to guarantee our survival.</p>
+                </div>
+              </li>
             </ul>
 
             <div className="border-t border-[#1a1a1a]/30 pt-10 text-center">
@@ -275,8 +282,30 @@ function Section5_Judgment() {
 function References() {
   const [isExporting, setIsExporting] = useState(false);
 
-  const handleDownload = () => {
-    window.print();
+  const handleDownload = async () => {
+    setIsExporting(true);
+    try {
+      const response = await fetch('/api/generate-pdf', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      });
+      if (!response.ok) throw new Error('Failed to generate PDF');
+      
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'JFA-1939-11-MEMO.pdf';
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } catch (error) {
+      console.error(error);
+      alert('Failed to generate PDF. Make sure the Node server is running.');
+    } finally {
+      setIsExporting(false);
+    }
   };
 
   const handleCopy = async () => {
@@ -326,20 +355,23 @@ function References() {
     <div className="text-sm text-[#1a1a1a] font-serif px-8 print:break-before-page print:py-8">
       <h4 className="font-black text-xl mb-6 uppercase tracking-tight">References</h4>
       <ul className="space-y-6 break-words font-medium text-sm md:text-base list-decimal pl-6 marker:font-black marker:text-[#bc002d]">
+         <li>Barnhart, M. A. (1987). <i>Japan Prepares for Total War: The Search for Economic Security, 1919-1941</i>. Cornell University Press.</li>
          <li>Bix, H. P. (2000). <i>Hirohito and the Making of Modern Japan</i>. HarperCollins.</li>
-         <li>Burleigh, M. (2000). <i>The Third Reich: A New History</i>. Hill and Wang.</li>
-         <li>Gaddis, J. L. (2005). <i>The Cold War: A New History</i>. Penguin Press. (Note: Extrapolated historical analysis of shifting hegemonies).</li>
-         <li>Japan Ministry of Foreign Affairs (Historical). (1939). <i>Internal Policy Memorandums regarding the European Crisis</i>. Imperial Archives, Tokyo.</li>
+         <li>Ienaga, S. (1978). <i>The Pacific War, 1931-1945</i>. Pantheon Books.</li>
+         <li>Iriye, A. (1987). <i>The Origins of the Second World War in Asia and the Pacific</i>. Longman.</li>
+         <li>Lu, D. J. (1961). <i>From the Marco Polo Bridge to Pearl Harbor: Japan's Entry Into World War II</i>. Public Affairs Press.</li>
          <li>Overy, R. (1998). <i>The Origins of the Second World War</i> (2nd ed.). Longman.</li>
+         <li>Tsunoda, R., de Bary, W. T., & Keene, D. (1964). <i>Sources of Japanese Tradition</i> (Vol. 2). Columbia University Press.</li>
       </ul>
       <div className="mt-16 flex flex-col items-center border-t-2 border-[#1a1a1a] pt-8 text-center space-y-6" data-html2canvas-ignore>
         <div className="flex flex-col sm:flex-row items-center gap-6 print:hidden">
           <button 
             onClick={handleDownload}
-            className="text-[#bc002d] hover:text-[#1a1a1a] text-sm font-bold uppercase tracking-widest transition-colors duration-200 underline decoration-1 underline-offset-4 flex items-center gap-2"
+            disabled={isExporting}
+            className="text-[#bc002d] hover:text-[#1a1a1a] disabled:opacity-50 text-sm font-bold uppercase tracking-widest transition-colors duration-200 underline decoration-1 underline-offset-4 flex items-center gap-2"
           >
             <Download className="w-4 h-4" />
-            Save as PDF
+            {isExporting ? 'Generating PDF...' : 'Save as PDF'}
           </button>
           
           <button 

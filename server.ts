@@ -17,13 +17,17 @@ async function startServer() {
       });
       const page = await browser.newPage();
       
+      // Emulate print media type FIRST so lazy-loaded JS or anything based on print loads correctly
+      await page.emulateMediaType('print');
+
       // Navigate to the local server
       await page.goto('http://127.0.0.1:3000/', {
-        waitUntil: 'networkidle0'
+        waitUntil: 'networkidle0',
+        timeout: 30000
       });
 
-      // Emulate print media type
-      await page.emulateMediaType('print');
+      // Wait a moment for animations/fonts to settle
+      await new Promise(resolve => setTimeout(resolve, 1000));
 
       const pdf = await page.pdf({
         format: 'Letter',
