@@ -4,8 +4,6 @@ import {
   FileText, Globe2, AlertTriangle, ShieldAlert, 
   Swords, Ship, Factory, Award, Landmark, Eye, Download, Copy
 } from 'lucide-react';
-// @ts-expect-error html2pdf does not have types
-import html2pdf from 'html2pdf.js';
 import { cn } from './lib/utils';
 
 export default function App() {
@@ -277,29 +275,8 @@ function Section5_Judgment() {
 function References() {
   const [isExporting, setIsExporting] = useState(false);
 
-  const handleDownload = async () => {
-    setIsExporting(true);
-    try {
-      const response = await fetch('/api/generate-pdf', {
-        method: 'POST',
-      });
-      if (!response.ok) throw new Error('Failed to generate PDF');
-      
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'JFA-1939-11-MEMO.pdf';
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
-    } catch (error) {
-      console.error(error);
-      alert('Failed to generate PDF. Please try again.');
-    } finally {
-      setIsExporting(false);
-    }
+  const handleDownload = () => {
+    window.print();
   };
 
   const handleCopy = async () => {
@@ -359,11 +336,10 @@ function References() {
         <div className="flex flex-col sm:flex-row items-center gap-6 print:hidden">
           <button 
             onClick={handleDownload}
-            disabled={isExporting}
-            className="text-[#bc002d] hover:text-[#1a1a1a] disabled:opacity-50 text-sm font-bold uppercase tracking-widest transition-colors duration-200 underline decoration-1 underline-offset-4 flex items-center gap-2"
+            className="text-[#bc002d] hover:text-[#1a1a1a] text-sm font-bold uppercase tracking-widest transition-colors duration-200 underline decoration-1 underline-offset-4 flex items-center gap-2"
           >
             <Download className="w-4 h-4" />
-            {isExporting ? 'Generating PDF...' : 'Download as PDF (Fixed)'}
+            Save as PDF
           </button>
           
           <button 
