@@ -48,7 +48,7 @@ export default function App() {
 
 function Section2_SystemFailure() {
   return (
-    <section className="print:break-before-page print:break-inside-avoid">
+    <section className="print:break-before-page print:py-8">
       <FadeIn>
         <div className="flex items-center gap-2 mb-8">
           <span className="border-2 border-[#1a1a1a] text-[#1a1a1a] w-8 h-8 flex items-center justify-center font-bold bg-[#f2e6d0]">02</span>
@@ -85,7 +85,7 @@ function Section2_SystemFailure() {
 
 function Section3_MajorPowers() {
   return (
-    <section className="print:break-before-page print:break-inside-avoid">
+    <section className="print:break-before-page print:py-8">
       <FadeIn>
         <div className="flex items-center gap-2 mb-8">
           <span className="border-2 border-[#1a1a1a] text-[#1a1a1a] w-8 h-8 flex items-center justify-center font-bold bg-[#f2e6d0]">03</span>
@@ -185,7 +185,7 @@ function Section4_CollapseTimeline() {
   ];
 
   return (
-    <section className="print:break-before-page print:break-inside-avoid">
+    <section className="print:break-before-page print:py-8">
       <FadeIn>
         <div className="flex items-center gap-2 mb-12">
           <span className="border-2 border-[#1a1a1a] text-[#1a1a1a] w-8 h-8 flex items-center justify-center font-bold bg-[#f2e6d0]">04</span>
@@ -196,11 +196,11 @@ function Section4_CollapseTimeline() {
       <div className="relative border-l-2 border-[#1a1a1a]/20 ml-4 md:ml-8 space-y-12">
         {events.map((event, index) => (
           <FadeIn key={index} delay={index * 0.15}>
-            <div className="relative pl-8 md:pl-12">
-              <div className="absolute -left-[21px] top-1 w-10 h-10 rounded-none bg-[#bc002d] flex items-center justify-center border-2 border-[#1a1a1a]">
+            <div className="relative pl-8 md:pl-12 print:break-inside-avoid print:mb-8">
+              <div className="absolute -left-[21px] top-1 w-10 h-10 rounded-none bg-[#bc002d] flex items-center justify-center border-2 border-[#1a1a1a] print:border-white">
                 {event.icon}
               </div>
-              <div className="bg-[#f2e6d0] p-8 border-4 border-[#1a1a1a] shadow-[8px_8px_0_#bc002d]">
+              <div className="bg-[#f2e6d0] p-8 border-4 border-[#1a1a1a] shadow-[8px_8px_0_#bc002d] print:shadow-none print:bg-white print:border-gray-300">
                 <span className="text-[#bc002d] font-black text-xl mb-2 block font-mono">{event.year}</span>
                 <h4 className="text-xl font-black uppercase tracking-tight mb-4">{event.title}</h4>
                 <p className="text-[#1a1a1a] font-medium leading-relaxed text-base">{event.text}</p>
@@ -215,7 +215,7 @@ function Section4_CollapseTimeline() {
 
 function Section5_Judgment() {
   return (
-    <section className="print:break-before-page print:break-inside-avoid">
+    <section className="print:break-before-page print:py-8">
       <FadeIn>
         <div className="flex items-center gap-2 mb-8">
           <span className="border-2 border-[#1a1a1a] text-[#1a1a1a] w-8 h-8 flex items-center justify-center font-bold bg-[#f2e6d0]">05</span>
@@ -274,7 +274,7 @@ function Section5_Judgment() {
 
 function References() {
   return (
-    <div className="text-sm text-[#1a1a1a] font-serif px-8 print:break-before-page print:break-inside-avoid">
+    <div className="text-sm text-[#1a1a1a] font-serif px-8 print:break-before-page print:py-8">
       <h4 className="font-black text-xl mb-6 uppercase tracking-tight">References</h4>
       <ul className="space-y-6 break-words font-medium text-sm md:text-base list-decimal pl-6 marker:font-black marker:text-[#bc002d]">
         <li>Bix, H. P. (2000). <i>Hirohito and the Making of Modern Japan</i>. HarperCollins.</li>
@@ -293,7 +293,7 @@ function References() {
             <polyline points="7 10 12 15 17 10"></polyline>
             <line x1="12" y1="15" x2="12" y2="3"></line>
           </svg>
-          Download as PDF
+          Save as PDF
         </button>
         <div className="text-[10px] font-bold tracking-widest opacity-80 space-y-2">
           <p>DOCUMENT #77</p>
@@ -391,7 +391,7 @@ function CoverPage() {
 
 function Section1_Intro() {
   return (
-    <section className="print:break-before-page print:break-inside-avoid">
+    <section className="print:break-before-page print:py-8">
       <FadeIn>
         <div className="flex items-center gap-2 mb-8">
           <span className="border-2 border-[#1a1a1a] text-[#1a1a1a] w-8 h-8 flex items-center justify-center font-bold bg-[#f2e6d0]">01</span>

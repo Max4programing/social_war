@@ -21,17 +21,34 @@ body {
     background-color: white !important;
     background-image: none !important;
     font-size: 11pt !important;
+    height: auto !important;
   }
   .prose {
     font-size: 11pt !important;
     line-height: 1.4 !important;
   }
-  section, header {
-    height: 100vh;
-    height: 250mm;
-    page-break-after: always;
+  header {
+    height: 90vh; /* Don't force exactly 100vh just in case of margins */
     display: flex;
     flex-direction: column;
     justify-content: center;
+    page-break-after: always;
+  }
+  section {
+    height: auto !important;
+    display: block !important;
+    page-break-after: always;
+    padding-top: 1cm;
+    padding-bottom: 1cm;
+  }
+  /* Ensure timeline cards don't break across pages if possible */
+  .timeline-event {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+  /* Remove scroll animations for print */
+  * {
+    transform: none !important;
+    opacity: 1 !important;
   }
 }
