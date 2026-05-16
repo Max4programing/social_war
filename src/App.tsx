@@ -277,29 +277,29 @@ function Section5_Judgment() {
 function References() {
   const [isExporting, setIsExporting] = useState(false);
 
-  const handleDownload = () => {
+  const handleDownload = async () => {
     setIsExporting(true);
-    document.body.classList.add('pdf-export-mode');
-    setTimeout(() => {
-        const element = document.getElementById('report-main-content');
-        if (!element) return;
-        const opt = {
-            margin:       [10, 0],
-            filename:     'JFA-1939-11-MEMO.pdf',
-            image:        { type: 'jpeg', quality: 0.98 },
-            html2canvas:  { scale: 2, useCORS: true, scrollX: 0, scrollY: 0 },
-            jsPDF:        { unit: 'mm', format: 'letter', orientation: 'portrait' },
-            pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] }
-        };
-
-        html2pdf().set(opt).from(element).save().then(() => {
-            document.body.classList.remove('pdf-export-mode');
-            setIsExporting(false);
-        }).catch(() => {
-            document.body.classList.remove('pdf-export-mode');
-            setIsExporting(false);
-        });
-    }, 500);
+    try {
+      const response = await fetch('/api/generate-pdf', {
+        method: 'POST',
+      });
+      if (!response.ok) throw new Error('Failed to generate PDF');
+      
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'JFA-1939-11-MEMO.pdf';
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } catch (error) {
+      console.error(error);
+      alert('Failed to generate PDF. Please try again.');
+    } finally {
+      setIsExporting(false);
+    }
   };
 
   const handleCopy = async () => {
