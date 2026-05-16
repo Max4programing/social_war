@@ -52,3 +52,18 @@ body {
     opacity: 1 !important;
   }
 }
+
+.pdf-export-mode * {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+}
+
+.pdf-export-mode {
+  background-color: white !important;
+  background-image: none !important;
+}
+
+.pdf-export-mode .print\:hidden {
+  display: none !important;
+}

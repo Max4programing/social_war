@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { motion, useScroll, useSpring } from 'framer-motion';
 import { 
   FileText, Globe2, AlertTriangle, ShieldAlert, 
-  Swords, Ship, Factory, Award, Landmark, Eye
+  Swords, Ship, Factory, Award, Landmark, Eye, Download, Copy
 } from 'lucide-react';
+// @ts-expect-error html2pdf does not have types
+import html2pdf from 'html2pdf.js';
 import { cn } from './lib/utils';
 
 export default function App() {
@@ -26,7 +28,7 @@ export default function App() {
         style={{ scaleX }}
       />
       
-      <main className="w-full max-w-5xl mx-auto px-6 sm:px-12 md:px-20 pt-16 relative z-10 print:max-w-none print:px-0 print:pt-0">
+      <main id="report-main-content" className="w-full max-w-5xl mx-auto px-6 sm:px-12 md:px-20 pt-16 relative z-10 print:max-w-none print:px-0 print:pt-0">
 
         <CoverPage />
         
@@ -273,28 +275,106 @@ function Section5_Judgment() {
 }
 
 function References() {
+  const [isExporting, setIsExporting] = useState(false);
+
+  const handleDownload = () => {
+    setIsExporting(true);
+    document.body.classList.add('pdf-export-mode');
+    setTimeout(() => {
+        const element = document.getElementById('report-main-content');
+        if (!element) return;
+        const opt = {
+            margin:       [10, 0],
+            filename:     'JFA-1939-11-MEMO.pdf',
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2, useCORS: true, scrollX: 0, scrollY: 0 },
+            jsPDF:        { unit: 'mm', format: 'letter', orientation: 'portrait' },
+            pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] }
+        };
+
+        html2pdf().set(opt).from(element).save().then(() => {
+            document.body.classList.remove('pdf-export-mode');
+            setIsExporting(false);
+        }).catch(() => {
+            document.body.classList.remove('pdf-export-mode');
+            setIsExporting(false);
+        });
+    }, 500);
+  };
+
+  const handleCopy = async () => {
+    const el = document.getElementById('report-main-content');
+    if (!el) return;
+    
+    // We create a temporary, visually hidden container so we can select it for the fallback
+    const clone = el.cloneNode(true) as HTMLElement;
+    const hideNodes = clone.querySelectorAll('.print\\:hidden, [data-html2canvas-ignore]');
+    hideNodes.forEach(n => n.parentNode?.removeChild(n));
+    clone.style.position = 'absolute';
+    clone.style.left = '-9999px';
+    document.body.appendChild(clone);
+
+    try {
+      if (navigator.clipboard && window.ClipboardItem) {
+        const htmlBlob = new Blob([clone.innerHTML], { type: 'text/html' });
+        const textBlob = new Blob([clone.innerText], { type: 'text/plain' });
+        const item = new ClipboardItem({
+           'text/html': htmlBlob,
+           'text/plain': textBlob
+        });
+        await navigator.clipboard.write([item]);
+        alert("Copied to clipboard! You can now paste it directly into Google Docs.");
+      } else {
+        throw new Error("Clipboard API not supported");
+      }
+    } catch(err) {
+      // Fallback
+      const range = document.createRange();
+      range.selectNode(clone);
+      window.getSelection()?.removeAllRanges();
+      window.getSelection()?.addRange(range);
+      try {
+        document.execCommand('copy');
+        alert("Copied to clipboard! You can now paste it directly into Google Docs.");
+      } catch (e) {
+        alert("Unable to copy to clipboard. You can press Ctrl+A and Ctrl+C on this page to copy manually.");
+      }
+    }
+    
+    window.getSelection()?.removeAllRanges();
+    document.body.removeChild(clone);
+  };
+
   return (
     <div className="text-sm text-[#1a1a1a] font-serif px-8 print:break-before-page print:py-8">
       <h4 className="font-black text-xl mb-6 uppercase tracking-tight">References</h4>
       <ul className="space-y-6 break-words font-medium text-sm md:text-base list-decimal pl-6 marker:font-black marker:text-[#bc002d]">
-        <li>Bix, H. P. (2000). <i>Hirohito and the Making of Modern Japan</i>. HarperCollins.</li>
-        <li>Burleigh, M. (2000). <i>The Third Reich: A New History</i>. Hill and Wang.</li>
-        <li>Gaddis, J. L. (2005). <i>The Cold War: A New History</i>. Penguin Press. (Note: Extrapolated historical analysis of shifting hegemonies).</li>
-        <li>Japan Ministry of Foreign Affairs (Historical). (1939). <i>Internal Policy Memorandums regarding the European Crisis</i>. Imperial Archives, Tokyo.</li>
-        <li>Overy, R. (1998). <i>The Origins of the Second World War</i> (2nd ed.). Longman.</li>
+         <li>Bix, H. P. (2000). <i>Hirohito and the Making of Modern Japan</i>. HarperCollins.</li>
+         <li>Burleigh, M. (2000). <i>The Third Reich: A New History</i>. Hill and Wang.</li>
+         <li>Gaddis, J. L. (2005). <i>The Cold War: A New History</i>. Penguin Press. (Note: Extrapolated historical analysis of shifting hegemonies).</li>
+         <li>Japan Ministry of Foreign Affairs (Historical). (1939). <i>Internal Policy Memorandums regarding the European Crisis</i>. Imperial Archives, Tokyo.</li>
+         <li>Overy, R. (1998). <i>The Origins of the Second World War</i> (2nd ed.). Longman.</li>
       </ul>
-      <div className="mt-16 flex flex-col items-center border-t-2 border-[#1a1a1a] pt-8 text-center space-y-6">
-        <button 
-          onClick={() => window.print()}
-          className="print:hidden text-[#bc002d] hover:text-[#1a1a1a] text-sm font-bold uppercase tracking-widest transition-colors duration-200 underline decoration-1 underline-offset-4 flex items-center gap-2"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="square" strokeLinejoin="miter">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-            <polyline points="7 10 12 15 17 10"></polyline>
-            <line x1="12" y1="15" x2="12" y2="3"></line>
-          </svg>
-          Save as PDF
-        </button>
+      <div className="mt-16 flex flex-col items-center border-t-2 border-[#1a1a1a] pt-8 text-center space-y-6" data-html2canvas-ignore>
+        <div className="flex flex-col sm:flex-row items-center gap-6 print:hidden">
+          <button 
+            onClick={handleDownload}
+            disabled={isExporting}
+            className="text-[#bc002d] hover:text-[#1a1a1a] disabled:opacity-50 text-sm font-bold uppercase tracking-widest transition-colors duration-200 underline decoration-1 underline-offset-4 flex items-center gap-2"
+          >
+            <Download className="w-4 h-4" />
+            {isExporting ? 'Generating PDF...' : 'Download as PDF (Fixed)'}
+          </button>
+          
+          <button 
+            onClick={handleCopy}
+            className="text-[#bc002d] hover:text-[#1a1a1a] text-sm font-bold uppercase tracking-widest transition-colors duration-200 underline decoration-1 underline-offset-4 flex items-center gap-2"
+          >
+            <Copy className="w-4 h-4" />
+            Copy for Google Docs
+          </button>
+        </div>
+        
         <div className="text-[10px] font-bold tracking-widest opacity-80 space-y-2">
           <p>DOCUMENT #77</p>
         </div>
